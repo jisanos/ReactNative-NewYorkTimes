@@ -3,8 +3,8 @@
 * Assignment 3
 * Starter Files
 *
-* CS47
-* Oct, 2018
+* COEN 4440
+* Spring, 2020
 */
 
 import React from 'react';
