@@ -65,7 +65,7 @@ export default class App extends React.Component {
               
 
             />
-
+            <Image source={Images.lupa} style={styles.lupa}/>
           </View>
 
           <View style={styles.news}>
@@ -102,9 +102,16 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   textField:{
-    paddingTop:6.4,
+    flex:1,
+    paddingTop:0,
     paddingLeft:25,
-
+  },
+  lupa:{
+    flex:  0.2,
+    aspectRatio:2,
+    resizeMode: 'contain',
+    alignSelf:'center',
+    
   },
   header: {
     flex: 0.8,
@@ -123,7 +130,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#f4f4f4",
     borderColor: "#3D3C3A",
     borderRadius:15,
-
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   news: {
     paddingTop:20,
