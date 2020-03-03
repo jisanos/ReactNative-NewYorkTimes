@@ -8,18 +8,20 @@
 */
 
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image, Dimensions } from 'react-native';
 import { Images, Colors } from './App/Themes'
 import APIRequest from './App/Config/APIRequest'
 
 import News from './App/Components/News'
 import Search from './App/Components/Search'
 
+const { width, height } = Dimensions.get('window');
+
 export default class App extends React.Component {
 
   state = {
     loading: true,
-    articles : [],
+    articles: [],
     searchText: '',
     category: ''
   }
@@ -31,7 +33,7 @@ export default class App extends React.Component {
   }
 
   async loadArticles(searchTerm = '', category = '') {
-    this.setState({articles:[], loading: true});
+    this.setState({ articles: [], loading: true });
     var resultArticles = [];
     if (category === '') {
       resultArticles = await APIRequest.requestSearchPosts(searchTerm);
@@ -39,26 +41,33 @@ export default class App extends React.Component {
       resultArticles = await APIRequest.requestCategoryPosts(category);
     }
     console.log(resultArticles);
-    this.setState({loading: false, articles: resultArticles})
+    this.setState({ loading: false, articles: resultArticles })
   }
 
   render() {
-    const {articles, loading} = this.state;
+    const { articles, loading } = this.state;
 
     return (
       <SafeAreaView style={styles.container}>
 
-        <Text style={{textAlign: 'center'}}>Have fun! :) {"\n"} Start by changing the API Key in "./App/Config/AppConfig.js" {"\n"} Then, take a look at the following components: {"\n"} NavigationButtons {"\n"} Search {"\n"} News {"\n"} 🔥</Text>
+        <View style={styles.header}>
 
-        {/*First, you'll need a logo*/}
+          <Image source={Images.logo} style={styles.logoImage}/>
 
-        {/*Then your search bar*/}
+        </View>
 
-        {/*And some news*/}
+        <View style={styles.search}>
+          <Text >
+            waewfaw
+          </Text>
+        </View>
 
-        {/*Though, you can style and organize these however you want! power to you 😎*/}
 
-        {/*If you want to return custom stuff from the NYT API, checkout the APIRequest file!*/}
+        <View style={styles.news}>
+          <Text>
+            waewfaw
+          </Text>
+        </View> 
 
       </SafeAreaView>
     );
@@ -71,5 +80,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  header: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingTop:10,
+  },
+  logoImage: {
+    flex: 1,
+    height: null,
+    width: null,
+    resizeMode: 'contain',
+  },
+  search: {
+    
+    flex: 1,
+    
+  },
+  news: {
+    flex: 5,
   }
 });
