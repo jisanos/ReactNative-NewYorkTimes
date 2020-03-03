@@ -8,7 +8,7 @@
 */
 
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, Dimensions, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image, Dimensions, TextInput, Keyboard, TouchableWithoutFeedback, SectionList } from 'react-native';
 import { Images, Colors } from './App/Themes'
 import APIRequest from './App/Config/APIRequest'
 
@@ -69,9 +69,22 @@ export default class App extends React.Component {
           </View>
 
           <View style={styles.news}>
-            <Text>
-              waewfaw
-          </Text>
+            <SectionList
+              sections={[
+                { title: 'TEST TITLE', data: [{ name: 'LOL' }] },
+                { title: 'TEST TITLE2', data: [{ name: 'LOL2' }] },
+              ]}
+              renderItem={({ item }) => (
+                <View>
+                  <Text>{item.name}</Text>
+                </View>
+              )}
+              renderSectionHeader={({ section }) => (
+                <View>
+                  <Text>{section.title}</Text>
+                </View>
+              )}
+            />
           </View>
 
         </SafeAreaView>
@@ -105,5 +118,7 @@ const styles = StyleSheet.create({
   },
   news: {
     flex: 5,
+    justifyContent:'flex-start',
+    alignItems:'flex-start'
   }
 });

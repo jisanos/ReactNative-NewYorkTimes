@@ -22,12 +22,12 @@ export default class News extends Component {
 
   //you can change the props above to whatever you want/need.
 
-  render () {
-    const {articles} = this.props;
+  render() {
+    const { articles } = this.props;
 
     return (
       <View style={styles.container}>
-        {/*Some FlatList or SectionList*/}
+
       </View>
     );
   }
