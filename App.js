@@ -8,7 +8,7 @@
 */
 
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image, Dimensions, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Images, Colors } from './App/Themes'
 import APIRequest from './App/Config/APIRequest'
 
@@ -44,32 +44,38 @@ export default class App extends React.Component {
     this.setState({ loading: false, articles: resultArticles })
   }
 
+
+
   render() {
     const { articles, loading } = this.state;
 
     return (
-      <SafeAreaView style={styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <SafeAreaView style={styles.container}>
 
-        <View style={styles.header}>
+          <View style={styles.header}>
 
-          <Image source={Images.logo} style={styles.logoImage}/>
+            <Image source={Images.logo} style={styles.logoImage} />
 
-        </View>
+          </View>
 
-        <View style={styles.search}>
-          <Text >
-            waewfaw
+          <View style={styles.search}>
+            <TextInput
+              placeholder='Search'
+
+
+            />
+
+          </View>
+
+          <View style={styles.news}>
+            <Text>
+              waewfaw
           </Text>
-        </View>
+          </View>
 
-
-        <View style={styles.news}>
-          <Text>
-            waewfaw
-          </Text>
-        </View> 
-
-      </SafeAreaView>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
     );
   }
 }
@@ -84,7 +90,7 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
     flexDirection: 'row',
-    paddingTop:10,
+    paddingTop: 10,
   },
   logoImage: {
     flex: 1,
@@ -93,9 +99,9 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   search: {
-    
+
     flex: 1,
-    
+
   },
   news: {
     flex: 5,
