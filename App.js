@@ -65,23 +65,26 @@ export default class App extends React.Component {
               
 
             />
-            <Image source={Images.lupa} style={styles.lupa}/>
+            <Image source={Images.lupa} style={styles.lupa}/> 
+            
           </View>
 
           <View style={styles.news}>
             <SectionList
               sections={[
-                { title: 'TEST TITLE', data: [{ name: 'LOL' }] },
-                { title: 'TEST TITLE2', data: [{ name: 'LOL2' }] },
+                { title: 'News Article One', data: [{ name: 'This is a fake news article. It is very pointless so ignore it. Kanye kinda lit by the way.' }] },
+                { title: 'News Article Two', data: [{ name: 'This is another fake ass news article. But, it is actually important, hence you should read it till the end.' }] },
               ]}
               renderItem={({ item }) => (
                 <View>
-                  <Text>{item.name}</Text>
+                  <Text style={styles.itemText}>
+                    {item.name}
+                  </Text>
                 </View>
               )}
               renderSectionHeader={({ section }) => (
                 <View>
-                  <Text>{section.title}</Text>
+                  <Text style={styles.itemTitle}>{section.title}</Text>
                 </View>
               )}
               
@@ -101,14 +104,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  itemText:{
+    paddingBottom:20,
+  },
+  itemTitle:{
+    fontSize:20,
+    fontWeight:'bold',
+  },
   textField:{
+    
     flex:1,
     paddingTop:0,
     paddingLeft:25,
   },
   lupa:{
     flex:  0.2,
-    aspectRatio:2,
+    aspectRatio:3,
     resizeMode: 'contain',
     alignSelf:'center',
     
@@ -137,6 +148,7 @@ const styles = StyleSheet.create({
     paddingTop:20,
     flex: 5,
     justifyContent:'flex-start',
-    alignItems:'flex-start'
+    alignItems:'flex-start',
+    paddingHorizontal:20,
   }
 });
