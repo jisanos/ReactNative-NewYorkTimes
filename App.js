@@ -60,9 +60,9 @@ export default class App extends React.Component {
           </View>
 
           <View style={styles.search}>
-            <TextInput
-              placeholder='Search'
-
+            <TextInput style={styles.textField} 
+              placeholder='Search for News'
+              
 
             />
 
@@ -84,6 +84,7 @@ export default class App extends React.Component {
                   <Text>{section.title}</Text>
                 </View>
               )}
+              
             />
           </View>
 
@@ -100,10 +101,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  textField:{
+    paddingTop:6.4,
+    paddingLeft:25,
+
+  },
   header: {
-    flex: 1,
+    flex: 0.8,
     flexDirection: 'row',
-    paddingTop: 10,
+    paddingTop: 20,
   },
   logoImage: {
     flex: 1,
@@ -112,11 +118,15 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   search: {
-
-    flex: 1,
+    width:width-30,
+    flex: 0.4,
+    backgroundColor: "#f4f4f4",
+    borderColor: "#3D3C3A",
+    borderRadius:15,
 
   },
   news: {
+    paddingTop:20,
     flex: 5,
     justifyContent:'flex-start',
     alignItems:'flex-start'
