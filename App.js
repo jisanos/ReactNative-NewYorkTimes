@@ -49,6 +49,7 @@ export default class App extends React.Component {
     )
   }
 
+  _keyExtractor = (item, index) => index;
 
   render() {
     const { articles, loading } = this.state;
@@ -77,13 +78,7 @@ export default class App extends React.Component {
               sections={[{ title: 'News Articles', data: this.state.articles }]}
 
               renderItem={({ item }) => this.articleRenderer(item)}
-
-            /*  renderSectionHeader={({ section }) => (
-                <View>
-                  <Text style={styles.itemTitle}>{''}</Text>
-                </View>
-              )}
-            */
+              keyExtractor={this._keyExtractor}
             />
           </View>
 
@@ -100,7 +95,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-
 
   textField: {
 
