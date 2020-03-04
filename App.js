@@ -28,8 +28,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
 
-    //uncomment this to run an API query!
-    //this.loadArticles();
+    this.loadArticles();
   }
 
   async loadArticles(searchTerm = '', category = '') {
@@ -44,6 +43,11 @@ export default class App extends React.Component {
     this.setState({ loading: false, articles: resultArticles })
   }
 
+  articleRenderer(item) {
+    return (
+      <News item={item} />
+    )
+  }
 
 
   render() {
@@ -63,7 +67,6 @@ export default class App extends React.Component {
             <TextInput style={styles.textField}
               placeholder='Search for News'
 
-
             />
             <Image source={Images.lupa} style={styles.lupa} />
 
@@ -71,40 +74,16 @@ export default class App extends React.Component {
 
           <View style={styles.news}>
             <SectionList
-              sections={[
-                {
-                  title: 'News Article', data: [{
-                    Text: 'This is a fake news article. It is very pointless so ignore it. Kanye kinda lit by the way.',
-                    ID: '3895384',
-                    author: 'MARTIN',
-                  }]
-                },
+              sections={[{ title: 'News Articles', data: this.state.articles }]}
 
+              renderItem={({ item }) => this.articleRenderer(item)}
 
-
-
-              ]}
-              renderItem={({ item }) => (
+            /*  renderSectionHeader={({ section }) => (
                 <View>
-                  <Text style={styles.itemText}>
-                    {item.Text}
-                  </Text>
-
-                  <Text style={styles.itemAuthor}>
-                    {item.author}
-                  </Text>
-
-                  <Text style={styles.itemID}>
-                    {item.ID}
-                  </Text>
+                  <Text style={styles.itemTitle}>{''}</Text>
                 </View>
               )}
-              renderSectionHeader={({ section }) => (
-                <View>
-                  <Text style={styles.itemTitle}>{section.title}</Text>
-                </View>
-              )}
-
+            */
             />
           </View>
 
@@ -121,24 +100,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  itemID: {
-    paddingBottom: 20,
-    fontSize: 12,
-    color:'#999999',
-    
-  },
-  itemAuthor:{
-    fontWeight:'500',
-    fontSize: 14,
-  },
-  itemText: {
-    fontSize: 14,
-    
-  },
-  itemTitle: {
-    fontSize: 26,
-    //fontWeight:'bold',
-  },
+
+
   textField: {
 
     flex: 1,
