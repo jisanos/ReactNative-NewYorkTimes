@@ -8,7 +8,7 @@
 */
 
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, Dimensions, TextInput, Keyboard, TouchableWithoutFeedback, SectionList } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image, Dimensions, TextInput, Keyboard, TouchableWithoutFeedback, SectionList, Linking } from 'react-native';
 import { Images, Colors } from './App/Themes'
 import APIRequest from './App/Config/APIRequest'
 
@@ -43,10 +43,22 @@ export default class App extends React.Component {
     this.setState({ loading: false, articles: resultArticles })
   }
 
-  articleRenderer(item) {
+  articleRenderer(item, index) {
     return (
-      <News item={item} />
+      <News item={item} method={()=> {this.openURL(index)}} />
     )
+  }
+  openURL = index => {
+    let allArticles = JSON.parse(JSON.stringify(this.state.articles));
+    let URL = allArticles[index].url
+    Linking.canOpenURL(URL).then(supported => {
+      if(!supported) {
+        console.log("Can't handle url: " + URL)
+      } else {
+        return Linking.openURL(URL)
+      }
+    })
+    console.log( "this is happening")
   }
 
   _keyExtractor = (item, index) => index;
@@ -77,7 +89,7 @@ export default class App extends React.Component {
             <SectionList
               sections={[{ title: 'News Articles', data: this.state.articles }]}
 
-              renderItem={({ item }) => this.articleRenderer(item)}
+              renderItem={({ item , index }) => this.articleRenderer(item, index)}
               keyExtractor={this._keyExtractor}
             />
           </View>

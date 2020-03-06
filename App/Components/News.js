@@ -21,7 +21,7 @@ export default class News extends Component {
   render() {
 
     return (
-      <TouchableHighlight onPress= {alert}>
+      <TouchableHighlight onPress= {this.props.method}>
       <View>
         <Text style={styles.itemTitle}>
           {this.props.item.title}
