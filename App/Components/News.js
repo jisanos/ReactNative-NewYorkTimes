@@ -9,7 +9,7 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types' //consider using this!
-import { StyleSheet, SafeAreaView, View, FlatList, Text, Linking } from 'react-native'
+import { StyleSheet, SafeAreaView, View, FlatList, Text, Linking, TouchableHighlight } from 'react-native'
 import { material } from 'react-native-typography' //consider using this!
 import { Metrics, Colors } from '../Themes'
 
@@ -21,6 +21,7 @@ export default class News extends Component {
   render() {
 
     return (
+      <TouchableHighlight onPress= {alert}>
       <View>
         <Text style={styles.itemTitle}>
           {this.props.item.title}
@@ -38,6 +39,7 @@ export default class News extends Component {
           {this.props.item.date}
         </Text>
       </View>
+      </TouchableHighlight>
     );
   }
 }
