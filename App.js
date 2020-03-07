@@ -8,7 +8,7 @@
 */
 
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, Dimensions, TouchableOpacity, TextInput, Keyboard, TouchableWithoutFeedback, SectionList, Linking, Button } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image, Dimensions, TouchableOpacity, TextInput, Keyboard, ActivityIndicator, TouchableWithoutFeedback, SectionList, Linking, Button } from 'react-native';
 import { Images, Colors } from './App/Themes'
 import APIRequest from './App/Config/APIRequest'
 
@@ -31,8 +31,22 @@ export default class App extends React.Component {
     this.loadArticles();
   }
 
+  loadingIndicator() {
+    if (this.state.loading) {
+      return (
+        <View style={{ flex: 1 , paddingTop:50}}>
+          <ActivityIndicator size="large" color="black" />
+        </View>
+      )
+    }
+    else {
+      return (null)
+    }
+  }
+
   async loadArticles(searchTerm = '', category = '') {
     this.setState({ articles: [], loading: true });
+
     var resultArticles = [];
     if (category === '') {
       resultArticles = await APIRequest.requestSearchPosts(searchTerm);
@@ -41,37 +55,39 @@ export default class App extends React.Component {
     }
     console.log(resultArticles);
     this.setState({ loading: false, articles: resultArticles })
+
   }
 
   articleRenderer(item, index) { // renders the article item  and sends the method openURL 
     //index as a pararameter 
     return (
-      <News item={item} method={()=> {this.openURL(index)}} />
+      <News item={item} method={() => { this.openURL(index) }} />
     )
   }
   openURL = index => { // opens the url of the index in the list
-    let allArticles = JSON.parse(JSON.stringify(this.state.articles)); 
+    let allArticles = JSON.parse(JSON.stringify(this.state.articles));
     let URL = allArticles[index].url // saves the url of the article at the index 
     Linking.canOpenURL(URL).then(supported => {
-      if(!supported) { // if the url doesnt work prints the following 
+      if (!supported) { // if the url doesnt work prints the following 
         console.log("Can't handle url: " + URL)
       } else { // if the url works the app sends you to the url 
-        return Linking.openURL(URL) 
+        return Linking.openURL(URL)
       }
     })
-    console.log( "this is happening")
+    console.log("this is happening")
   }
 
-  onChangeText = searchText => {  
-    this.setState({searchText}) // changes the state of searchText 
+  onChangeText = searchText => {
+    this.setState({ searchText }) // changes the state of searchText 
   }
 
   searchLoad = searchText => {
     this.loadArticles(searchText, "") // loads articles with the searchText in them
-   
+
   }
 
   _keyExtractor = (item, index) => index;
+
 
   render() {
     const { articles, loading } = this.state;
@@ -88,25 +104,32 @@ export default class App extends React.Component {
 
           <View style={styles.search}>
             <TextInput style={styles.textField}
-              onChangeText= {text=> this.onChangeText(text)}
+              onChangeText={text => this.onChangeText(text)}
               value={this.state.text}
               placeholder='Search for News'
+              onSubmitEditing={() => { this.searchLoad(this.state.searchText) }}
 
-            /> 
-            <TouchableOpacity style={styles.lupa} 
-            // when pressed searches for articles with the key word from the api  
-            onPress={()=> {search=true , this.searchLoad(this.state.searchText)} } > 
+            />
+            <TouchableOpacity style={styles.lupa}
+              // when pressed searches for articles with the key word from the api  
+              onPress={() => { this.searchLoad(this.state.searchText) }} >
               <Image source={Images.lupa} style={styles.lupaButton} />
-          </TouchableOpacity>
-            
-            
+            </TouchableOpacity>
+
+
           </View>
+
+          {
+            this.loadingIndicator()
+            //calls function that shows an activity indicator if the appis
+            //searching or not
+          }
 
           <View style={styles.news}>
             <SectionList
               sections={[{ title: 'News Articles', data: this.state.articles }]}
 
-              renderItem={({ item , index }) => this.articleRenderer(item, index)}
+              renderItem={({ item, index }) => this.articleRenderer(item, index)}
               // renders the item and sends the method articleRenderer the nesesary parameters 
               // index is used when you touch the item, it sends you to the url site
               keyExtractor={this._keyExtractor}
@@ -140,7 +163,7 @@ const styles = StyleSheet.create({
 
   },
   lupaButton: {
-    flex: 1 ,
+    flex: 1,
     resizeMode: 'contain',
     alignSelf: 'center',
 
