@@ -8,7 +8,7 @@
 */
 
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, Dimensions, TouchableOpacity, TextInput, Keyboard, TouchableWithoutFeedback, SectionList, Linking, Button } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image, Dimensions, TouchableOpacity, TextInput, Keyboard, ActivityIndicator, TouchableWithoutFeedback, SectionList, Linking, Button } from 'react-native';
 import { Images, Colors } from './App/Themes'
 import APIRequest from './App/Config/APIRequest'
 
@@ -31,8 +31,22 @@ export default class App extends React.Component {
     this.loadArticles();
   }
 
+  loadingIndicator() {
+    if (this.state.loading) {
+      return (
+        <View style={{ flex: 1 , paddingTop:50}}>
+          <ActivityIndicator size="large" color="black" />
+        </View>
+      )
+    }
+    else {
+      return (null)
+    }
+  }
+
   async loadArticles(searchTerm = '', category = '') {
     this.setState({ articles: [], loading: true });
+
     var resultArticles = [];
     if (category === '') {
       resultArticles = await APIRequest.requestSearchPosts(searchTerm);
@@ -41,6 +55,7 @@ export default class App extends React.Component {
     }
     console.log(resultArticles);
     this.setState({ loading: false, articles: resultArticles })
+
   }
 
   articleRenderer(item, index) { // renders the article item  and sends the method openURL 
@@ -92,17 +107,23 @@ export default class App extends React.Component {
               onChangeText={text => this.onChangeText(text)}
               value={this.state.text}
               placeholder='Search for News'
-              onSubmitEditing ={() => {this.searchLoad(this.state.searchText)}}
+              onSubmitEditing={() => { this.searchLoad(this.state.searchText) }}
 
             />
             <TouchableOpacity style={styles.lupa}
               // when pressed searches for articles with the key word from the api  
-              onPress={() => {this.searchLoad(this.state.searchText)}} >
+              onPress={() => { this.searchLoad(this.state.searchText) }} >
               <Image source={Images.lupa} style={styles.lupaButton} />
             </TouchableOpacity>
 
 
           </View>
+
+          {
+            this.loadingIndicator()
+            //calls function that shows an activity indicator if the appis
+            //searching or not
+          }
 
           <View style={styles.news}>
             <SectionList
@@ -112,7 +133,6 @@ export default class App extends React.Component {
               // renders the item and sends the method articleRenderer the nesesary parameters 
               // index is used when you touch the item, it sends you to the url site
               keyExtractor={this._keyExtractor}
-              
             />
           </View>
 
