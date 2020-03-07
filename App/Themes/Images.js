@@ -10,7 +10,8 @@
 // leave off @2x/@3x
 const images = {
   logo: require('../Images/nyt.png'),
-  lupa: require('../Images/lupa.png')
+  lupa: require('../Images/lupa.png'),
+  category: require('../Images/category.png')
 }
 
 export default images
