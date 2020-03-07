@@ -8,7 +8,7 @@
 */
 
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, Dimensions, TouchableOpacity, TextInput, Keyboard, ActivityIndicator, TouchableWithoutFeedback, SectionList, Linking, Button } from 'react-native';
+import { StyleSheet, Picker, Text, View, SafeAreaView, Image, Dimensions, TouchableOpacity, TextInput, Keyboard, ActivityIndicator, TouchableWithoutFeedback, SectionList, Linking, Button } from 'react-native';
 import { Images, Colors } from './App/Themes'
 import APIRequest from './App/Config/APIRequest'
 
@@ -24,7 +24,8 @@ export default class App extends React.Component {
     loading: true,
     articles: [],
     searchText: '',
-    category: ''
+    category: '',
+    picker: false,//flag for the categories
   }
 
   componentDidMount() {
@@ -34,7 +35,7 @@ export default class App extends React.Component {
   loadingIndicator() {
     if (this.state.loading) {
       return (
-        <View style={{ flex: 1 , paddingTop:50}}>
+        <View style={{ flex: 1, paddingTop: 50 }}>
           <ActivityIndicator size="large" color="black" />
         </View>
       )
@@ -85,9 +86,33 @@ export default class App extends React.Component {
     this.loadArticles(searchText, "") // loads articles with the searchText in them
 
   }
+  searchCategory = category =>{
+    this.loadArticles('',category)
+  }
 
   _keyExtractor = (item, index) => index;
 
+  showPicker() {
+    if (this.state.picker) {
+      return (
+        <View style={{ flex: 1, alignItems:'center',justifyContent:'center'}}>
+          <Picker style={{ flex:1, position:"absolute", width:'100%'}}
+            selectedValue={this.state.category}
+            onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue, picker: false })}
+            itemStyle={{flex:1}}>
+            <Picker.Item label='Politics' value='Politics' />
+            <Picker.Item label='World' value='World' />
+            <Picker.Item label='Default' value=''/>
+          </Picker>
+        </View>
+      )
+
+    }
+    else {
+      return (null)
+    }
+
+  }
 
   render() {
     const { articles, loading } = this.state;
@@ -111,8 +136,16 @@ export default class App extends React.Component {
 
             />
             <TouchableOpacity style={styles.lupa}
+              // when pressed select a category to load  
+              onPress={() => { this.setState({ picker: true }) }} >
+
+              <Image source={Images.category} style={styles.lupaButton} />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.lupa}
               // when pressed searches for articles with the key word from the api  
               onPress={() => { this.searchLoad(this.state.searchText) }} >
+
               <Image source={Images.lupa} style={styles.lupaButton} />
             </TouchableOpacity>
 
@@ -123,6 +156,11 @@ export default class App extends React.Component {
             this.loadingIndicator()
             //calls function that shows an activity indicator if the appis
             //searching or not
+          }
+
+          {
+            this.showPicker()
+            //shows a selection of categories if the flag is true
           }
 
           <View style={styles.news}>
@@ -157,7 +195,7 @@ const styles = StyleSheet.create({
   },
   lupa: {
     flex: 0.2,
-    aspectRatio: 3,
+    aspectRatio: 2.6,
     resizeMode: 'contain',
     alignSelf: 'center',
 
