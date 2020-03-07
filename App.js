@@ -17,6 +17,9 @@ import Search from './App/Components/Search'
 
 const { width, height } = Dimensions.get('window');
 
+const categoriesArt = ['World', 'Politics', 'Business', 'Opinion', 'Technology', 'Science',
+  'Health', 'Sports', 'Arts', 'Books', 'Style', 'Food', 'Travel', 'Obituaries']
+
 
 export default class App extends React.Component {
 
@@ -86,24 +89,35 @@ export default class App extends React.Component {
     this.loadArticles(searchText, "") // loads articles with the searchText in them
 
   }
-  searchCategory = category =>{
-    this.loadArticles('',category)
+  searchCategory = category => { //loads articles with the selected category
+    this.loadArticles('', category)
   }
 
   _keyExtractor = (item, index) => index;
 
+  loadPickerItems() {
+    return (
+      categoriesArt.map((x, i) => {
+        return (<Picker.Item label={x} key={i} value={x} />)
+      })
+    )
+  }
+
   showPicker() {
     if (this.state.picker) {
       return (
-        <View style={{ flex: 1,paddingHorizontal:17, alignItems:'center',justifyContent:'center'}}>
-          <Picker style={{ flex:1, position:"absolute", width:'100%'}}
+        <View style={{ flex: 1, paddingHorizontal: 17, alignItems: 'center', justifyContent: 'center' }}>
+          <Picker style={{ flex: 1, position: "absolute", width: '100%' }}
             selectedValue={this.state.category}
-            onValueChange={(itemValue, itemIndex) => {this.setState({ category: itemValue, picker: false }),this.searchCategory(this.state.category)}}
-            itemStyle={{flex:1}}
+            onValueChange={(itemValue, itemIndex) => { this.setState({ category: itemValue, picker: false }), this.searchCategory(itemValue) }}
+            itemStyle={{ flex: 1 }}
             mode='dropdown'>
-            <Picker.Item label='Politics' value='Politics' />
-            <Picker.Item label='World' value='World' />
-            <Picker.Item label='Default' value=''/>
+            <Picker.Item label='Default' value='' />
+            {
+              this.loadPickerItems() //loads the different categories for picker item
+            }
+
+
           </Picker>
         </View>
       )
@@ -152,16 +166,14 @@ export default class App extends React.Component {
 
 
           </View>
-
+          {
+            this.showPicker()
+            //shows a selection of categories if the flag is true
+          }
           {
             this.loadingIndicator()
             //calls function that shows an activity indicator if the appis
             //searching or not
-          }
-
-          {
-            this.showPicker()
-            //shows a selection of categories if the flag is true
           }
 
           <View style={styles.news}>
