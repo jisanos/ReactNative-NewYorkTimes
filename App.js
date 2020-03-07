@@ -8,7 +8,7 @@
 */
 
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, Dimensions, TextInput, Keyboard, TouchableWithoutFeedback, SectionList, Linking } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image, Dimensions, TouchableOpacity, TextInput, Keyboard, TouchableWithoutFeedback, SectionList, Linking, Button } from 'react-native';
 import { Images, Colors } from './App/Themes'
 import APIRequest from './App/Config/APIRequest'
 
@@ -16,6 +16,7 @@ import News from './App/Components/News'
 import Search from './App/Components/Search'
 
 const { width, height } = Dimensions.get('window');
+
 
 export default class App extends React.Component {
 
@@ -27,7 +28,6 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-
     this.loadArticles();
   }
 
@@ -43,22 +43,32 @@ export default class App extends React.Component {
     this.setState({ loading: false, articles: resultArticles })
   }
 
-  articleRenderer(item, index) {
+  articleRenderer(item, index) { // renders the article item  and sends the method openURL 
+    //index as a pararameter 
     return (
       <News item={item} method={()=> {this.openURL(index)}} />
     )
   }
-  openURL = index => {
-    let allArticles = JSON.parse(JSON.stringify(this.state.articles));
-    let URL = allArticles[index].url
+  openURL = index => { // opens the url of the index in the list
+    let allArticles = JSON.parse(JSON.stringify(this.state.articles)); 
+    let URL = allArticles[index].url // saves the url of the article at the index 
     Linking.canOpenURL(URL).then(supported => {
-      if(!supported) {
+      if(!supported) { // if the url doesnt work prints the following 
         console.log("Can't handle url: " + URL)
-      } else {
-        return Linking.openURL(URL)
+      } else { // if the url works the app sends you to the url 
+        return Linking.openURL(URL) 
       }
     })
     console.log( "this is happening")
+  }
+
+  onChangeText = searchText => {  
+    this.setState({searchText}) // changes the state of searchText 
+  }
+
+  searchLoad = searchText => {
+    this.loadArticles(searchText, "") // loads articles with the searchText in them
+   
   }
 
   _keyExtractor = (item, index) => index;
@@ -78,11 +88,18 @@ export default class App extends React.Component {
 
           <View style={styles.search}>
             <TextInput style={styles.textField}
+              onChangeText= {text=> this.onChangeText(text)}
+              value={this.state.text}
               placeholder='Search for News'
 
-            />
-            <Image source={Images.lupa} style={styles.lupa} />
-
+            /> 
+            <TouchableOpacity style={styles.lupa} 
+            // when pressed searches for articles with the key word from the api  
+            onPress={()=> {search=true , this.searchLoad(this.state.searchText)} } > 
+              <Image source={Images.lupa} style={styles.lupaButton} />
+          </TouchableOpacity>
+            
+            
           </View>
 
           <View style={styles.news}>
@@ -90,6 +107,8 @@ export default class App extends React.Component {
               sections={[{ title: 'News Articles', data: this.state.articles }]}
 
               renderItem={({ item , index }) => this.articleRenderer(item, index)}
+              // renders the item and sends the method articleRenderer the nesesary parameters 
+              // index is used when you touch the item, it sends you to the url site
               keyExtractor={this._keyExtractor}
             />
           </View>
@@ -109,7 +128,6 @@ const styles = StyleSheet.create({
   },
 
   textField: {
-
     flex: 1,
     paddingTop: 0,
     paddingLeft: 25,
@@ -117,6 +135,12 @@ const styles = StyleSheet.create({
   lupa: {
     flex: 0.2,
     aspectRatio: 3,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+
+  },
+  lupaButton: {
+    flex: 1 ,
     resizeMode: 'contain',
     alignSelf: 'center',
 
