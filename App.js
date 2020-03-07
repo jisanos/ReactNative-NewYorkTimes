@@ -95,11 +95,12 @@ export default class App extends React.Component {
   showPicker() {
     if (this.state.picker) {
       return (
-        <View style={{ flex: 1, alignItems:'center',justifyContent:'center'}}>
+        <View style={{ flex: 1,paddingHorizontal:17, alignItems:'center',justifyContent:'center'}}>
           <Picker style={{ flex:1, position:"absolute", width:'100%'}}
             selectedValue={this.state.category}
-            onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue, picker: false })}
-            itemStyle={{flex:1}}>
+            onValueChange={(itemValue, itemIndex) => {this.setState({ category: itemValue, picker: false }),this.searchCategory(this.state.category)}}
+            itemStyle={{flex:1}}
+            mode='dropdown'>
             <Picker.Item label='Politics' value='Politics' />
             <Picker.Item label='World' value='World' />
             <Picker.Item label='Default' value=''/>
@@ -136,8 +137,8 @@ export default class App extends React.Component {
 
             />
             <TouchableOpacity style={styles.lupa}
-              // when pressed select a category to load  
-              onPress={() => { this.setState({ picker: true }) }} >
+              // when pressed, toggle the picker on and off.
+              onPress={() => { this.setState({ picker: !this.state.picker }) }} >
 
               <Image source={Images.category} style={styles.lupaButton} />
             </TouchableOpacity>
