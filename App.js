@@ -109,7 +109,7 @@ export default class App extends React.Component {
         <View style={{ flex: 1, paddingHorizontal: 17, alignItems: 'center', justifyContent: 'center' }}>
           <Picker style={{ flex: 1, position: "absolute", width: '100%' }}
             selectedValue={this.state.category}
-            onValueChange={(itemValue, itemIndex) => { this.setState({ category: itemValue, picker: false }), this.searchCategory(itemValue) }}
+            onValueChange={(itemValue, itemIndex) => { this.setState({ category: itemValue }), this.searchCategory(itemValue) }}
             itemStyle={{ flex: 1 }}
             mode='dropdown'>
             <Picker.Item label='Default' value='' />
